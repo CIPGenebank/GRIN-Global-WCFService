@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Product Id="{9E166A1B-8D1C-477F-814F-D2F5061B1FCD}" Name="GRIN-Global WCFService" Language="1033" Version="1.0.0.2"
+           Manufacturer="International Potato Center " UpgradeCode="64a2723d-f65e-4e0b-8a07-776fb932072f">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <!--<Media Id="1" Cabinet="Media1.cab" EmbedCab="yes"/>-->
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <iis:WebSite Id="DefaultWebSite" Description="Default Web Site" Directory="INSTALLFOLDER">
+      <iis:WebAddress Id="AllUnassigned" Port="80"/>
+    </iis:WebSite>
+
+    <Feature Id="ProductFeature" Title="GRIN-Global WCFService" Description="WCF Service for GRIN-Global Web v1.10.6.1" Level="1" Display="expand">
+      <ComponentGroupRef Id="ProductComponents" />
+      <!-- copy libraries -->
+      <ComponentGroupRef Id="BinComponents" />
+      <!-- update web.config -->
+      <ComponentRef Id="WebConfigUpdate" />
+    </Feature>
+
+    <UIRef Id="WixUI_Web" />
+    <WixVariable Id="WixUIBannerBmp" Overridable="yes" Value="Resources\TopBanner.png" />
+    <WixVariable Id="WixUIDialogBmp" Overridable="yes" Value="Resources\SideBanner.png" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <Property Id="DB_USER" Value="gg_user"/>
+    <Property Id="DB_PASSWORD" Value="Password123#"/>
+    <Property Id="DB_SERVER" Value="localhost\sqlexpress"/>
+    <Property Id="DB_DATABASE" Value="gringlobal"/>
+    <Property Id="GG_CONNECTION_STRING" Value="Data Source=localhost\sqlexpress;Database=gringlobal;Integrated Security=SSPI"/>
+
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="IISMain" Name='inetpub'>
+        <Directory Id="WWWMain" Name='wwwroot' ComponentGuidGenerationSeed='3d3c3b18-15d4-4b98-a2d0-6ffe5268918c'>
+          <Directory Id="INSTALLFOLDER" Name='GringlobalService'>
+            <Directory Id="BIN" Name="bin"/>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <SetDirectory Id="TARGETDIR" Value="C:\"/>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+
+      <Component Id="ProductComponent" Guid="6F44232F-1C0B-4278-AB2B-BFD34FAE863C">
+        <File Id="WCFService.svc" Source="..\GrinGlobal.WCFService\bin\Release\Publish\WCFService.svc" />
+        <File Id="Web.config" Source="..\GrinGlobal.WCFService\bin\Release\Publish\Web.config" />
+      </Component>
+
+      <Component Id="WebsiteAppPoolComponent" Guid="" KeyPath="yes">
+        <iis:WebAppPool Id="WebsiteAppPool"
+                        Name=".NET v4.0"
+                        Identity="applicationPoolIdentity"
+                         ManagedPipelineMode="Integrated"
+                        ManagedRuntimeVersion="v4.0" />
+      </Component>
+
+      <Component Id='WebVirtualDirComponent' Guid='683bca11-a55a-475b-b67b-6e4ac4c13273'>
+        <CreateFolder />
+        <iis:WebVirtualDir Id='VDir' Alias='GringlobalService' Directory='INSTALLFOLDER' WebSite='DefaultWebSite'>
+          <iis:WebApplication Id='GrinGlobalWCFService' Name='GringlobalService' WebAppPool='WebsiteAppPool'>
+
+          </iis:WebApplication>
+        </iis:WebVirtualDir>
+      </Component>
+
+      <!--<Component Id="File_$(var.GrinGlobalWCFService.TargetFileName)" Guid="2b15efdf-597c-43fa-a9dd-15a682edc526">	
+        <CreateFolder />
+        <File Id="$(var.GrinGlobal.WCFService.TargetFileName)" KeyPath="yes" Source="$(var.GrinGlobal.WCFService.TargetPath)"/>
+			</Component>-->
+    </ComponentGroup>
+    <ComponentGroup Id="BinComponents" Directory="BIN">
+      <Component Id="BinComponent" Guid="A41811D7-49DD-462B-98D2-56DF1202008E">
+        <File Id="Antlr4.Runtime.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\Antlr4.Runtime.dll" />
+        <File Id="BouncyCastle.Crypto.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\BouncyCastle.Crypto.dll" />
+        <File Id="GrinGlobal.AdditionalDataTriggers.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.AdditionalDataTriggers.dll" />
+        <File Id="GrinGlobal.Business.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.Business.dll" />
+        <File Id="GrinGlobal.Core.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.Core.dll" />
+        <File Id="GrinGlobal.DatabaseInspector.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.DatabaseInspector.dll" />
+        <File Id="GrinGlobal.InstallHelper.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.InstallHelper.dll" />
+        <File Id="GrinGlobal.Interface.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.Interface.dll" />
+        <File Id="GrinGlobal.WCFService.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\GrinGlobal.WCFService.dll" />
+        <File Id="Interop.WindowsInstaller.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\Interop.WindowsInstaller.dll" />
+        <File Id="MailKit.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\MailKit.dll" />
+        <File Id="MimeKit.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\MimeKit.dll" />
+        <File Id="Newtonsoft.Json.dll" Source="..\GrinGlobal.WCFService\bin\Release\Publish\bin\Newtonsoft.Json.dll" />
+
+      </Component>
+    </ComponentGroup>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="WebConfigUpdate" Guid="4AD0CE0C-8ACD-484C-A5E6-056E63E94CCA">
+        <CreateFolder />
+        <!-- Copy web.config -->
+        <!--<File Id="Web.config" KeyPath="yes" Source="..\GrinGlobalWCFService\bin\Release\Publish\Web.config" Vital="yes"/>-->
+        <!--<File Id="WebConfigFile" KeyPath="yes" Source="$(var.publishDir)\Web.config" Vital="yes" />-->
+        <!-- Update web.config -->
+        <util:XmlFile Id="ModifyConnectionString"
+                 Action="setValue"
+                 Permanent="yes"
+                 ElementPath="/configuration/connectionStrings/add[\[]@name='DataManager'[\]]"
+                 Name="connectionString"
+                 File="[INSTALLFOLDER]\Web.config"
+                 Value="[GG_CONNECTION_STRING]"
+                 SelectionLanguage="XSLPattern"
+                 Sequence="1" />
+      </Component>
+    </DirectoryRef>
+
+  </Fragment>
+
+</Wix>

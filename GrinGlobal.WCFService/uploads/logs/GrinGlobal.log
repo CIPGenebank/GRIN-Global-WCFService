@@ -1,0 +1,10 @@
+06/02/2020 07:10:30.574 AM - 11 - GrinGlobal.Core v 1.10.6.1 - Failed username from ::1
+06/02/2020 07:10:30.689 AM - 11 - GrinGlobal.Core v 1.10.6.1 - Exception: Invalid user name / password combination.DataSet GrinGlobal.Business.SecureData.softLogin(String userName, String password)
+06/02/2020 07:11:51.101 AM - 11 - GrinGlobal.Core v 1.10.6.1 - Failed password for user cvelasquez from ::1
+06/02/2020 07:11:51.218 AM - 11 - GrinGlobal.Core v 1.10.6.1 - Exception: Invalid user name / password combination.DataSet GrinGlobal.Business.SecureData.softLogin(String userName, String password)
+06/02/2020 07:12:00.382 AM - 11 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: cvelasquez
+06/02/2020 07:16:15.803 AM - 15 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: administrator
+06/02/2020 07:21:30.276 AM - 21 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: administrator
+06/02/2020 07:41:29.041 AM - 9 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: administrator
+06/02/2020 07:56:31.771 AM - 10 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: administrator
+06/02/2020 07:59:44.322 AM - 12 - GrinGlobal.Core v 1.10.6.1 - Successfull login by: administrator

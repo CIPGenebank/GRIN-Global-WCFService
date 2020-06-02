@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="GrinGlobal.WCFService.WCFService" CodeBehind="WCFService.svc.cs" %>
