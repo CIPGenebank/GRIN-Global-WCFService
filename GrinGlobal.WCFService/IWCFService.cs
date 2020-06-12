@@ -18,8 +18,8 @@ namespace GrinGlobal.WCFService
         Stream printer(string printerId, string parameters);
 
         [OperationContract]
-        [WebInvoke(Method = "GET", UriTemplate = "getdata/{dataview}?parameters={parameters}")]
-        Stream getdata(string dataview, string parameters);
+        [WebInvoke(Method = "GET", UriTemplate = "getdata/{dataview}?parameters={parameters}&limit={limit}")]
+        Stream Getdata(string dataview, string parameters, string limit);
 
         [OperationContract]
         [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json)]
@@ -46,8 +46,12 @@ namespace GrinGlobal.WCFService
         #endregion
 
         [OperationContract]
-        [WebInvoke(Method = "POST", UriTemplate = "search/{tablename}?dataview={dataview}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        Stream SearchData(string tablename, string dataview, string query);
+        [WebInvoke(Method = "POST", UriTemplate = "search/{tablename}?dataview={dataview}&limit={limit}&offset={offset}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        Stream SearchData(string tablename, string dataview, string query, string limit, string offset);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "searchkeys/{tablename}?limit={limit}&offset={offset}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        Stream SearchKeys(string tablename, string query, string limit, string offset);
     }
 
     public class Status
