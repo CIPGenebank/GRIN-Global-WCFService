@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
+
+using System.ServiceModel.Web;
 
 namespace GrinGlobal.WCFService
 {
@@ -52,6 +53,10 @@ namespace GrinGlobal.WCFService
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "searchkeys/{tablename}?limit={limit}&offset={offset}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         Stream SearchKeys(string tablename, string query, string limit, string offset);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "print?printURI={printURI}&printConnectionType={printConnectionType}")]
+        Stream Print(string printURI, string printConnectionType, string zpl);
     }
 
     public class Status
